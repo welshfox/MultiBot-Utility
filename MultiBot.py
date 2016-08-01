@@ -141,10 +141,11 @@ class multiBot:
             for file_name in files_list:
                 if file_name == self.configSectionMap(self.bots[self.selectedBot])['botlaunchername']:
                     filePath = os.path.join(root, file_name)
+                    setroot = root
                     break
         if filePath != None:
             cmd = 'start ' + filePath
-            self.scans.append(subprocess.Popen(filePath, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=root))
+            self.scans.append(subprocess.Popen(filePath, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
         else: raise SystemExit("Could not locate specified bot launcher. Check Config")
         
     def stopScans(self):
@@ -183,7 +184,7 @@ class multiBot:
                 with open(tempConfigPath, "rt") as fin:
                     for line in fin:
                         outline = line.replace('MULTIBOTLATITUDE', self.startingLatitude)
-                        outline = line.replace('MULTIBOTLONGITUDE', self.startingLongitude)
+                        outline = outline.replace('MULTIBOTLONGITUDE', self.startingLongitude)
                         fout.write(outline)
                     fin.close()
                 fout.close()
