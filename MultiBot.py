@@ -44,12 +44,12 @@ class multiBot:
                         ready = False
                         while not ready: 
                             ready = self.setupAccountInfo()
-                            time.sleep(5)
-                        time.sleep(1)
+                            time.sleep(0.5)
+                        time.sleep(0.5)
                         self.startScan()
                         if account != self.accounts[-1]:
                             print "Waiting for new scan to finish using config file... Be patient."
-                            time.sleep(10)
+                            time.sleep(0.5)
                             self.currentAccount += 1
                     self.restartTimer = time.time()
                     print "Scan(s) were started with auto-restart enabled. Minutes: " + str(self.restartMinutes)
@@ -67,12 +67,12 @@ class multiBot:
                     ready = False
                     while not ready: 
                         ready = self.setupAccountInfo()
-                        time.sleep(5)
-                    time.sleep(1)
+                        time.sleep(0.5)
+                    time.sleep(0.5)
                     self.startScan()
                     if account != self.accounts[-1]:
                         print "Waiting for new scan to finish using config file... Be patient."
-                        time.sleep(10)
+                        time.sleep(0.5)
                         self.currentAccount += 1
                 print "\n\nPress Enter to exit..." 
                 raw_input() 
@@ -144,12 +144,16 @@ class multiBot:
                     setroot = root
                     break
         if filePath != None:
-            cmd = 'start ' + filePath
-            self.scans.append(subprocess.Popen(filePath, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
+            SW_MINIMIZE = 6
+            info = subprocess.STARTUPINFO()
+            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+            info.wShowWindow = SW_MINIMIZE
+            cmd = 'start /MIN ' + filePath
+            self.scans.append(subprocess.Popen(filePath, startupinfo=info, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
         else: raise SystemExit("Could not locate specified bot launcher. Check Config")
         
     def stopScans(self):
-        time.sleep(1.5)
+        time.sleep(0.5)
         FNULL = open(os.devnull, 'w')
         for i in range (0, len(self.accounts)):
             subprocess.call(['taskkill', '/F', '/T', '/PID', str(self.scans[i].pid)], stdout=FNULL)
