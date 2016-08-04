@@ -182,16 +182,15 @@ class multiBot:
             botName = self.configSectionMap(self.bots[self.selectedBot])['name']
             raise SystemExit("Coordinate config file could not be located. SelectedBot: %s Config: %s" % (botName, configName))
         if tempConfigPath == None:
-            self.createTemplate(configName, configFilePath, templateName)
-        else:
-            with open(configFilePath, "wt") as fout:
-                with open(tempConfigPath, "rt") as fin:
-                    for line in fin:
-                        outline = line.replace('MULTIBOTLATITUDE', self.startingLatitude)
-                        outline = outline.replace('MULTIBOTLONGITUDE', self.startingLongitude)
-                        fout.write(outline)
-                    fin.close()
-                fout.close()
+            tempConfigPath = self.createTemplate(configName, configFilePath, templateName)
+        with open(configFilePath, "wt") as fout:
+            with open(tempConfigPath, "rt") as fin:
+                for line in fin:
+                    outline = line.replace('MULTIBOTLATITUDE', self.startingLatitude)
+                    outline = outline.replace('MULTIBOTLONGITUDE', self.startingLongitude)
+                    fout.write(outline)
+                fin.close()
+            fout.close()
 
     def setupAccountInfo(self):
         print "Setting configs for " + self.accounts[self.currentAccount]
