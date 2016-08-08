@@ -10,6 +10,7 @@ class multiBot:
         self.config.read("MultiBotConfig.ini")
         
         self.debugMode = None
+        self.minimized = None
         self.loopCounter = None
         self.restartTimer = None
         self.restartEnabled = None
@@ -85,6 +86,7 @@ class multiBot:
     ####################Config Handling###################
     def parseConfig(self):
         self.debugMode = self.configSectionMap("MultiSettings")['debugconfig']
+        self.minimized = self.configSectionMap("MultiSettings")['startminimized']
         self.restartEnabled = self.configSectionMap("MultiSettings")['restartenabled']
         self.restartMinutes = self.configSectionMap("MultiSettings")['restarttimer']
         self.startingLatitude = self.configSectionMap("MultiSettings")['startinglatitude']
@@ -109,7 +111,7 @@ class multiBot:
         sections = self.config.sections()
         for section in sections:
             if "Account_" in section: 
-                self.accounts.append(section)
+                if self.configSectionMap(section)['enabled'] == True: self.accounts.append(section)
         
     def identifyBots(self):
         sections = self.config.sections()
@@ -144,12 +146,16 @@ class multiBot:
                     setroot = root
                     break
         if filePath != None:
-            SW_MINIMIZE = 6
-            info = subprocess.STARTUPINFO()
-            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
-            info.wShowWindow = SW_MINIMIZE
-            cmd = 'start /MIN ' + filePath
-            self.scans.append(subprocess.Popen(filePath, startupinfo=info, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
+            if self.minimized:
+                SW_MINIMIZE = 6
+                info = subprocess.STARTUPINFO()
+                info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+                info.wShowWindow = SW_MINIMIZE
+                cmd = 'start /MIN ' + filePath
+                self.scans.append(subprocess.Popen(filePath, startupinfo=info, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
+            else: 
+                cmd = 'start ' + filePath
+                self.scans.append(subprocess.Popen(filePath, creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=setroot))
         else: raise SystemExit("Could not locate specified bot launcher. Check Config")
         
     def stopScans(self):
