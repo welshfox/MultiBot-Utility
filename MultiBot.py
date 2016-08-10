@@ -138,6 +138,8 @@ class multiBot:
     ###################Process Handling###################
     def startScan(self):
         print "Starting scan for " + self.accounts[self.currentAccount]
+        print "Proxy: " + str(self.configSectionMap(self.accounts[self.currentAccount])['proxy'])
+        print "====================================\n"
         filePath = None
         for root, dirs_list, files_list in os.walk(os.getcwd()):
             for file_name in files_list:
@@ -199,6 +201,7 @@ class multiBot:
             fout.close()
 
     def setupAccountInfo(self):
+        print "\n===================================="
         print "Setting configs for " + self.accounts[self.currentAccount]
         configFilePath = None
         tempConfigPath = None
@@ -232,6 +235,9 @@ class multiBot:
                             outline = outline.replace('MULTIBOTPTCPASSWORD', self.configSectionMap(self.accounts[self.currentAccount])['pass'])
                         outline = outline.replace('MULTIBOTSHAREDUSERNAME', self.configSectionMap(self.accounts[self.currentAccount])['login'])
                         outline = outline.replace('MULTIBOTSHAREDPASSWORD', self.configSectionMap(self.accounts[self.currentAccount])['pass'])
+                        if self.configSectionMap(self.accounts[self.currentAccount])['proxy'] != False:
+                            outline = outline.replace('MULTIBOTHTTPPROXY', self.configSectionMap(self.accounts[self.currentAccount])['proxy'])
+                        else: outline = outline.replace('MULTIBOTHTTPPROXY', "")
                         fout.write(outline)
                     fin.close()
                 fout.close()
