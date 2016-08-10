@@ -1,6 +1,25 @@
 Welshfox's MultiBot Utility.
+https://github.com/welshfox/MultiBot-Utility/
+reach me on discord: welshf0x#1724
+
 
 Should work with most bots for - Pokemon Go.
+
+
+IMPORTANT:
+IF YOU ARE GOING TO USE THIS TOOL THEN I RECCOMEND USING THE COMPILED VERSION!!
+Look under the 'Releases' tab on GitHub for the actual compiled versions.
+
+NEWS:
+Proxy support is implemented and it can handle a per account proxy setup.
+Read more in the config to understand how it works. If no Proxy is used 
+then enter 'False' into the field. 
+
+REMEMBER:
+You need to install your bots into the folder and write the folder names
+correctly into the config. Also, you need to initially setup the config for
+the bots you are adding so the tool will work.
+
 
 README FIRST: 
 This bot can handle multiple accounts.
